@@ -273,8 +273,8 @@
             word-wrap: break-word;
         }
 
-        /* Tombol Run ke DartPad */
-        .dartpad-button {
+        /* Tombol Run */
+        .run-button {
             background: #7dd3fc;
             color: #0f172a;
             border: none;
@@ -289,29 +289,74 @@
             align-items: center;
             gap: 10px;
             border: 2px solid transparent;
-            text-decoration: none;
         }
 
-        .dartpad-button:hover {
+        .run-button:hover {
             background: #6ac3e0;
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(125, 211, 252, 0.5);
             border-color: #fff;
         }
 
-        .dartpad-button:active {
+        .run-button:active {
             transform: translateY(0);
         }
 
-        .dartpad-button i {
-            font-size: 1.2em;
+        /* DartPad Container */
+        .dartpad-container {
+            margin-top: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #7dd3fc;
+            box-shadow: 0 10px 30px rgba(125, 211, 252, 0.3);
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dartpad-container.show {
+            display: block;
+        }
+
+        .dartpad-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            background: white;
+        }
+
+        .close-button {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+
+        .close-button:hover {
+            background: #dc2626;
+            transform: scale(1.05);
         }
 
         .button-group {
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
             gap: 10px;
-            margin-top: 20px;
         }
 
         /* Warna syntax */
@@ -338,6 +383,7 @@
             .header h1 { font-size: 2em; }
             .content { padding: 20px; }
             .materi { padding: 20px; }
+            .dartpad-iframe { height: 400px; }
         }
     </style>
 </head>
@@ -406,9 +452,17 @@
                 </div>
 
                 <div class="button-group">
-                    <a href="https://dartpad.dev/?id=9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d" target="_blank" class="dartpad-button">
-                        ▶️ BUKA DI DARTPAD
-                    </a>
+                    <button class="run-button" onclick="toggleDartPad('buku')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-buku" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Buku</span>
+                        <button class="close-button" onclick="closeDartPad('buku')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d&theme=dark"></iframe>
                 </div>
             </div>
 
@@ -461,9 +515,17 @@
                 </div>
 
                 <div class="button-group">
-                    <a href="https://dartpad.dev/?id=8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d" target="_blank" class="dartpad-button">
-                        ▶️ BUKA DI DARTPAD
-                    </a>
+                    <button class="run-button" onclick="toggleDartPad('mobil')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-mobil" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Mobil</span>
+                        <button class="close-button" onclick="closeDartPad('mobil')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d&theme=dark"></iframe>
                 </div>
             </div>
 
@@ -506,9 +568,17 @@
                 </div>
 
                 <div class="button-group">
-                    <a href="https://dartpad.dev/?id=7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d" target="_blank" class="dartpad-button">
-                        ▶️ BUKA DI DARTPAD
-                    </a>
+                    <button class="run-button" onclick="toggleDartPad('warna')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-warna" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Warna</span>
+                        <button class="close-button" onclick="closeDartPad('warna')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d&theme=dark"></iframe>
                 </div>
             </div>
 
@@ -555,9 +625,17 @@
                 </div>
 
                 <div class="button-group">
-                    <a href="https://dartpad.dev/?id=6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d" target="_blank" class="dartpad-button">
-                        ▶️ BUKA DI DARTPAD
-                    </a>
+                    <button class="run-button" onclick="toggleDartPad('titik')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-titik" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Titik</span>
+                        <button class="close-button" onclick="closeDartPad('titik')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d&theme=dark"></iframe>
                 </div>
             </div>
 
@@ -621,9 +699,17 @@
                 </div>
 
                 <div class="button-group">
-                    <a href="https://dartpad.dev/?id=5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d" target="_blank" class="dartpad-button">
-                        ▶️ BUKA DI DARTPAD
-                    </a>
+                    <button class="run-button" onclick="toggleDartPad('mahasiswa')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-mahasiswa" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Mahasiswa</span>
+                        <button class="close-button" onclick="closeDartPad('mahasiswa')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d&theme=dark"></iframe>
                 </div>
             </div>
 
@@ -683,4 +769,434 @@
 
   <span class="keyword">void</span> info() {
     print(<span class="string">'👤 $_nama, $_umur tahun'</span>);
-    print(<span class="string">
+    print(<span class="string">'   Email: $_email'</span>);
+    print(<span class="string">'   No HP: $_noHP'</span>);
+  }
+}
+
+<span class="keyword">void</span> main() {
+  <span class="type">Person</span> p = <span class="type">Person</span>(<span class="string">'Budi'</span>, 25, <span class="string">'budi@email.com'</span>, <span class="string">'081234567890'</span>);
+  p.info();
+  
+  p.email = <span class="string">'email-salah'</span>; <span class="comment">// Akan gagal validasi</span>
+  p.noHP = <span class="string">'123'</span>; <span class="comment">// Akan gagal</span>
+  p.umur = -5; <span class="comment">// Akan gagal</span>
+  
+  p.email = <span class="string">'budi.baru@email.com'</span>; <span class="comment">// Berhasil</span>
+  p.info();
+}</pre>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="run-button" onclick="toggleDartPad('person')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-person" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Person</span>
+                        <button class="close-button" onclick="closeDartPad('person')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d&theme=dark"></iframe>
+                </div>
+            </div>
+
+            <!-- MATERI 7: PRODUK -->
+            <div id="produk" class="materi">
+                <h2>📦 7. KELAS PRODUK - VALIDASI SETTER</h2>
+                
+                <div class="deskripsi">
+                    <p><strong>🔍 KONSEP:</strong> Validasi pada setter memastikan data yang masuk sesuai aturan bisnis.</p>
+                    <p><strong>📌 PENJELASAN:</strong> Kita tambahkan stok dan validasi diskon.</p>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>📁 produk.dart</span>
+                        <span class="code-badge">DART</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="keyword">class</span> <span class="type">Produk</span> {
+  <span class="type">String</span> <span class="keyword">_nama</span>;
+  <span class="type">double</span> <span class="keyword">_harga</span>;
+  <span class="type">int</span> <span class="keyword">_stok</span>;
+  <span class="type">double</span> <span class="keyword">_diskon</span> = 0;
+
+  <span class="type">Produk</span>(<span class="keyword">this</span>._nama, <span class="keyword">this</span>._harga, <span class="keyword">this</span>._stok);
+
+  <span class="comment">// Getter</span>
+  <span class="type">String</span> get nama => _nama;
+  <span class="type">double</span> get harga => _harga;
+  <span class="type">int</span> get stok => _stok;
+  <span class="type">double</span> get diskon => _diskon;
+
+  <span class="comment">// Setter dengan validasi</span>
+  <span class="keyword">set</span> nama(<span class="type">String</span> value) {
+    <span class="keyword">if</span> (value.length >= 3) {
+      _nama = value;
+    } <span class="keyword">else</span> {
+      print(<span class="string">'❌ Nama minimal 3 karakter'</span>);
+    }
+  }
+
+  <span class="keyword">set</span> harga(<span class="type">double</span> value) {
+    <span class="keyword">if</span> (value > 0) {
+      _harga = value;
+    } <span class="keyword">else</span> {
+      print(<span class="string">'❌ Harga harus positif'</span>);
+    }
+  }
+
+  <span class="keyword">set</span> stok(<span class="type">int</span> value) {
+    <span class="keyword">if</span> (value >= 0) {
+      _stok = value;
+    } <span class="keyword">else</span> {
+      print(<span class="string">'❌ Stok tidak boleh negatif'</span>);
+    }
+  }
+
+  <span class="keyword">set</span> diskon(<span class="type">double</span> value) {
+    <span class="keyword">if</span> (value >= 0 && value <= 100) {
+      _diskon = value;
+    } <span class="keyword">else</span> {
+      print(<span class="string">'❌ Diskon harus 0-100%'</span>);
+    }
+  }
+
+  <span class="type">double</span> get hargaSetelahDiskon {
+    <span class="keyword">return</span> _harga * (1 - _diskon / 100);
+  }
+
+  <span class="keyword">void</span> info() {
+    print(<span class="string">'📦 $_nama'</span>);
+    print(<span class="string">'   Harga: Rp${_harga.toStringAsFixed(0)}'</span>);
+    <span class="keyword">if</span> (_diskon > 0) {
+      print(<span class="string">'   Diskon: $_diskon%'</span>);
+      print(<span class="string">'   Harga setelah diskon: Rp${hargaSetelahDiskon.toStringAsFixed(0)}'</span>);
+    }
+    print(<span class="string">'   Stok: $_stok'</span>);
+  }
+}
+
+<span class="keyword">void</span> main() {
+  <span class="type">Produk</span> p = <span class="type">Produk</span>(<span class="string">'Laptop'</span>, 10000000, 5);
+  p.info();
+  
+  p.diskon = 20; <span class="comment">// Berhasil</span>
+  p.stok = -1; <span class="comment">// Gagal</span>
+  p.nama = <span class="string">'PC'</span>; <span class="comment">// Gagal (terlalu pendek)</span>
+  p.nama = <span class="string">'Laptop Gaming'</span>; <span class="comment">// Berhasil</span>
+  
+  p.info();
+}</pre>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="run-button" onclick="toggleDartPad('produk')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-produk" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Produk</span>
+                        <button class="close-button" onclick="closeDartPad('produk')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d&theme=dark"></iframe>
+                </div>
+            </div>
+
+            <!-- MATERI 8: USER -->
+            <div id="user" class="materi">
+                <h2>🔐 8. KELAS USER - SISTEM LOGIN</h2>
+                
+                <div class="deskripsi">
+                    <p><strong>🔍 KONSEP:</strong> Sistem login dengan enkapsulasi password dan validasi keamanan.</p>
+                    <p><strong>📌 PENJELASAN:</strong> Kita tambahkan role (admin/user) dan login attempt.</p>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>📁 user.dart</span>
+                        <span class="code-badge">DART</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="keyword">class</span> <span class="type">User</span> {
+  <span class="type">String</span> <span class="keyword">_username</span>;
+  <span class="type">String</span> <span class="keyword">_password</span>;
+  <span class="type">String</span> <span class="keyword">_email</span>;
+  <span class="type">String</span> <span class="keyword">_role</span>;
+  <span class="type">int</span> <span class="keyword">_loginAttempts</span> = 0;
+  <span class="type">bool</span> <span class="keyword">_isLocked</span> = <span class="keyword">false</span>;
+
+  <span class="type">User</span>(<span class="keyword">this</span>._username, <span class="keyword">this</span>._password, <span class="keyword">this</span>._email, <span class="keyword">this</span>._role);
+
+  <span class="comment">// Getter</span>
+  <span class="type">String</span> get username => _username;
+  <span class="type">String</span> get email => _email;
+  <span class="type">String</span> get role => _role;
+  <span class="type">bool</span> get isLocked => _isLocked;
+  <span class="type">int</span> get loginAttempts => _loginAttempts;
+
+  <span class="type">bool</span> login(<span class="type">String</span> username, <span class="type">String</span> password) {
+    <span class="keyword">if</span> (_isLocked) {
+      print(<span class="string">'🔒 Akun terkunci! Hubungi admin.'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">if</span> (username == _username && password == _password) {
+      _loginAttempts = 0;
+      print(<span class="string">'✅ Login berhasil sebagai $_role'</span>);
+      <span class="keyword">return</span> <span class="keyword">true</span>;
+    } <span class="keyword">else</span> {
+      _loginAttempts++;
+      print(<span class="string">'❌ Login gagal. Percobaan ke-$_loginAttempts'</span>);
+      
+      <span class="keyword">if</span> (_loginAttempts >= 3) {
+        _isLocked = <span class="keyword">true</span>;
+        print(<span class="string">'🔒 Akun terkunci karena 3x gagal login!'</span>);
+      }
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+  }
+
+  <span class="type">bool</span> gantiPassword(<span class="type">String</span> lama, <span class="type">String</span> baru) {
+    <span class="keyword">if</span> (lama != _password) {
+      print(<span class="string">'❌ Password lama salah'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">if</span> (baru.length < 8) {
+      print(<span class="string">'❌ Password baru minimal 8 karakter'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">if</span> (baru == lama) {
+      print(<span class="string">'❌ Password baru harus berbeda'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    _password = baru;
+    print(<span class="string">'✅ Password berhasil diubah'</span>);
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+
+  <span class="keyword">void</span> info() {
+    print(<span class="string">'👤 @$_username ($_role)'</span>);
+    print(<span class="string">'   Email: $_email'</span>);
+    print(<span class="string">'   Status: ${_isLocked ? "Terkunci" : "Aktif"}'</span>);
+  }
+}
+
+<span class="keyword">void</span> main() {
+  <span class="type">User</span> admin = <span class="type">User</span>(<span class="string">'admin'</span>, <span class="string">'rahasia123'</span>, <span class="string">'admin@system.com'</span>, <span class="string">'ADMIN'</span>);
+  
+  admin.info();
+  admin.login(<span class="string">'admin'</span>, <span class="string">'salah'</span>); <span class="comment">// Gagal 1</span>
+  admin.login(<span class="string">'admin'</span>, <span class="string">'salah2'</span>); <span class="comment">// Gagal 2</span>
+  admin.login(<span class="string">'admin'</span>, <span class="string">'salah3'</span>); <span class="comment">// Gagal 3 -> terkunci</span>
+  admin.login(<span class="string">'admin'</span>, <span class="string">'rahasia123'</span>); <span class="comment">// Sudah terkunci</span>
+}</pre>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="run-button" onclick="toggleDartPad('user')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-user" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - User</span>
+                        <button class="close-button" onclick="closeDartPad('user')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d&theme=dark"></iframe>
+                </div>
+            </div>
+
+            <!-- MATERI 9: REKENING BANK -->
+            <div id="rekening" class="materi">
+                <h2>🏦 9. KELAS REKENING BANK - TRANSAKSI</h2>
+                
+                <div class="deskripsi">
+                    <p><strong>🔍 KONSEP:</strong> Simulasi rekening bank dengan fitur deposit, tarik, transfer, dan history transaksi.</p>
+                    <p><strong>📌 PENJELASAN:</strong> Kita tambahkan history transaksi dan biaya admin.</p>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>📁 rekening.dart</span>
+                        <span class="code-badge">DART</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><span class="keyword">class</span> <span class="type">RekeningBank</span> {
+  <span class="type">String</span> <span class="keyword">_nomorRekening</span>;
+  <span class="type">String</span> <span class="keyword">_namaPemilik</span>;
+  <span class="type">double</span> <span class="keyword">_saldo</span>;
+  <span class="type">List</span>&lt;<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">dynamic</span>&gt;&gt; <span class="keyword">_history</span> = [];
+
+  <span class="type">RekeningBank</span>(<span class="keyword">this</span>._nomorRekening, <span class="keyword">this</span>._namaPemilik, <span class="keyword">this</span>._saldo);
+
+  <span class="comment">// Getter</span>
+  <span class="type">String</span> get nomorRekening => _nomorRekening;
+  <span class="type">String</span> get namaPemilik => _namaPemilik;
+  <span class="type">double</span> get saldo => _saldo;
+  <span class="type">List</span>&lt;<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">dynamic</span>&gt;&gt; get history => 
+      <span class="type">List</span>.unmodifiable(_history);
+
+  <span class="keyword">void</span> _tambahHistory(<span class="type">String</span> jenis, <span class="type">double</span> jumlah, {<span class="type">String</span>? keterangan}) {
+    _history.add({
+      <span class="string">'waktu'</span>: DateTime.now().toString(),
+      <span class="string">'jenis'</span>: jenis,
+      <span class="string">'jumlah'</span>: jumlah,
+      <span class="string">'saldo_setelah'</span>: _saldo,
+      <span class="string">'keterangan'</span>: keterangan ?? <span class="string">'-'</span>,
+    });
+  }
+
+  <span class="type">bool</span> deposit(<span class="type">double</span> jumlah) {
+    <span class="keyword">if</span> (jumlah <= 0) {
+      print(<span class="string">'❌ Jumlah deposit harus positif'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    _saldo += jumlah;
+    _tambahHistory(<span class="string">'DEPOSIT'</span>, jumlah);
+    print(<span class="string">'✅ Deposit Rp${jumlah.toStringAsFixed(0)} berhasil'</span>);
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+
+  <span class="type">bool</span> tarik(<span class="type">double</span> jumlah) {
+    <span class="keyword">if</span> (jumlah <= 0) {
+      print(<span class="string">'❌ Jumlah tarik harus positif'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">if</span> (_saldo < jumlah) {
+      print(<span class="string">'❌ Saldo tidak mencukupi (Saldo: Rp${_saldo.toStringAsFixed(0)})'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    _saldo -= jumlah;
+    _tambahHistory(<span class="string">'TARIK'</span>, jumlah);
+    print(<span class="string">'✅ Tarik Rp${jumlah.toStringAsFixed(0)} berhasil'</span>);
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+
+  <span class="type">bool</span> transfer(<span class="type">RekeningBank</span> tujuan, <span class="type">double</span> jumlah) {
+    <span class="keyword">if</span> (jumlah <= 0) {
+      print(<span class="string">'❌ Jumlah transfer harus positif'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">const</span> <span class="type">double</span> biayaAdmin = 2500;
+    <span class="type">double</span> total = jumlah + biayaAdmin;
+
+    <span class="keyword">if</span> (_saldo < total) {
+      print(<span class="string">'❌ Saldo tidak cukup untuk transfer + biaya admin'</span>);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    _saldo -= total;
+    tujuan._saldo += jumlah;
+    
+    _tambahHistory(<span class="string">'TRANSFER KELUAR'</span>, jumlah, 
+        keterangan: <span class="string">'Ke: ${tujuan._namaPemilik}'</span>);
+    tujuan._tambahHistory(<span class="string">'TRANSFER MASUK'</span>, jumlah,
+        keterangan: <span class="string">'Dari: $_namaPemilik'</span>);
+
+    print(<span class="string">'✅ Transfer Rp${jumlah.toStringAsFixed(0)} ke ${tujuan._namaPemilik} berhasil'</span>);
+    print(<span class="string">'   Biaya admin: Rp$biayaAdmin'</span>);
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+
+  <span class="keyword">void</span> info() {
+    print(<span class="string">'\n🏦 REKENING: $_nomorRekening'</span>);
+    print(<span class="string">'   Nama: $_namaPemilik'</span>);
+    print(<span class="string">'   Saldo: Rp${_saldo.toStringAsFixed(0)}'</span>);
+  }
+
+  <span class="keyword">void</span> tampilkanHistory() {
+    print(<span class="string">'\n📋 HISTORY TRANSAKSI $_namaPemilik:'</span>);
+    <span class="keyword">for</span> (<span class="keyword">var</span> t <span class="keyword">in</span> _history.reversed) {
+      print(<span class="string">'   ${t['waktu'].toString().substring(0,19)}'</span>);
+      print(<span class="string">'   ${t['jenis']}: Rp${t['jumlah']}'</span>);
+      <span class="keyword">if</span> (t['keterangan'] != '-') {
+        print(<span class="string">'   ${t['keterangan']}'</span>);
+      }
+      print(<span class="string">'   ---'</span>);
+    }
+  }
+}
+
+<span class="keyword">void</span> main() {
+  <span class="type">RekeningBank</span> rekening1 = <span class="type">RekeningBank</span>(<span class="string">'001-01'</span>, <span class="string">'Budi'</span>, 1000000);
+  <span class="type">RekeningBank</span> rekening2 = <span class="type">RekeningBank</span>(<span class="string">'001-02'</span>, <span class="string">'Ani'</span>, 500000);
+
+  rekening1.info();
+  rekening2.info();
+
+  rekening1.deposit(500000);
+  rekening1.tarik(200000);
+  rekening1.transfer(rekening2, 300000);
+
+  rekening1.info();
+  rekening2.info();
+
+  rekening1.tampilkanHistory();
+  rekening2.tampilkanHistory();
+}</pre>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="run-button" onclick="toggleDartPad('rekening')">
+                        ▶️ JALANKAN DI DARTPAD
+                    </button>
+                </div>
+
+                <div id="dartpad-rekening" class="dartpad-container">
+                    <div style="background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #7dd3fc;">🚀 DartPad - Rekening</span>
+                        <button class="close-button" onclick="closeDartPad('rekening')">Tutup</button>
+                    </div>
+                    <iframe class="dartpad-iframe" src="https://dartpad.dev/embed-dart.html?id=1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d&theme=dark"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 - <strong>USMAN YAKIN TRIO SINADA</strong> | NIM: 251410006 | Kelas: SI2A</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">✨ Tema Malam dengan Bintang - DartPad Integration ✨</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleDartPad(materi) {
+            const dartpad = document.getElementById(`dartpad-${materi}`);
+            const isVisible = dartpad.classList.contains('show');
+            
+            // Tutup semua DartPad yang terbuka
+            const allDartpads = document.querySelectorAll('.dartpad-container');
+            allDartpads.forEach(pad => {
+                pad.classList.remove('show');
+            });
+            
+            // Buka yang diklik jika sebelumnya tertutup
+            if (!isVisible) {
+                dartpad.classList.add('show');
+                // Scroll ke DartPad
+                dartpad.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function closeDartPad(materi) {
+            document.getElementById(`dartpad-${materi}`).classList.remove('show');
+        }
+    </script>
+</body>
+</html>
