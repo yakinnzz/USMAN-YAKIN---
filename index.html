@@ -172,35 +172,64 @@
 
         /* Setiap materi */
         .materi {
-            margin-bottom: 50px;
-            padding: 25px;
+            margin-bottom: 60px;
+            padding: 30px;
             background: rgba(30, 41, 59, 0.3);
             border: 1px solid #334155;
             border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .materi:hover {
+            border-color: #7dd3fc;
+            box-shadow: 0 0 30px rgba(125, 211, 252, 0.2);
         }
 
         .materi h2 {
             color: #7dd3fc;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid #334155;
+            font-size: 1.8em;
         }
 
         .materi .deskripsi {
             background: #1e293b;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             margin: 15px 0;
             border-left: 4px solid #7dd3fc;
         }
 
+        .materi .deskripsi p {
+            margin: 12px 0;
+            text-align: justify;
+        }
+
+        .materi .deskripsi strong {
+            color: #7dd3fc;
+        }
+
         .materi .highlight {
             background: #2d3b4f;
-            padding: 12px;
+            padding: 15px;
             border-radius: 8px;
-            margin: 10px 0;
+            margin: 15px 0;
             color: #fcd34d;
             border: 1px dashed #7dd3fc;
+            font-style: italic;
+        }
+
+        .materi .note {
+            background: rgba(125, 211, 252, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #7dd3fc;
+        }
+
+        .materi .note p {
+            margin: 5px 0;
         }
 
         /* Code container */
@@ -289,7 +318,20 @@
             <div id="buku" class="materi">
                 <h2>📚 1. Kelas Buku - Constructor Dasar</h2>
                 <div class="deskripsi">
-                    <p>Merepresentasikan buku dengan atribut judul menggunakan parameterized constructor untuk inisialisasi objek.</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p><strong>Constructor</strong> adalah method spesial yang secara otomatis dipanggil ketika sebuah objek dibuat dari suatu kelas. Tujuan utamanya adalah untuk menginisialisasi nilai awal dari atribut-atribut yang dimiliki oleh kelas tersebut. Dalam pemrograman berorientasi objek, constructor memegang peranan penting karena memastikan bahwa setiap objek yang diciptakan berada dalam keadaan yang valid dan siap digunakan.</p>
+                    
+                    <p><strong>Parameterized Constructor</strong> adalah constructor yang menerima parameter untuk mengisi nilai awal atribut. Dalam Dart, kita bisa menggunakan sintaks <code>this.namaAtribut</code> pada parameter constructor untuk secara langsung mengisi nilai atribut tanpa perlu menulis kode tambahan di dalam body constructor. Ini dikenal dengan istilah "initializing formal parameters".</p>
+                    
+                    <p><strong>Mengapa Constructor Penting?</strong> Bayangkan jika kita harus mengisi nilai atribut satu per satu setelah objek dibuat. Ini rentan terhadap kesalahan lupa mengisi atribut penting, atau bahkan inkonsistensi data. Constructor memaksa kita untuk menyediakan data yang diperlukan sejak awal, sehingga objek selalu dalam keadaan lengkap dan valid.</p>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Saat mendata buku di perpustakaan, setiap buku pasti memiliki judul. Tidak ada buku tanpa judul. Dengan constructor, kita memastikan bahwa setiap objek Buku yang dibuat harus memiliki judul. Ini mencerminkan aturan bisnis "setiap buku harus memiliki judul" langsung ke dalam kode.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Constructor memiliki nama yang sama dengan nama kelas. Tidak memiliki tipe return (bahkan void tidak diperbolehkan). Dalam Dart, keyword <code>new</code> bersifat opsional saat memanggil constructor.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Constructor seperti "kartu identitas" saat lahir. Setiap bayi yang lahir harus memiliki nama, tanggal lahir, dan orang tua. Constructor memastikan data dasar ini tercatat sebelum bayi (objek) bisa berinteraksi dengan dunia.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -322,7 +364,26 @@
             <div id="mobil" class="materi">
                 <h2>🚗 2. Kelas Mobil - Named Constructor</h2>
                 <div class="deskripsi">
-                    <p>Memiliki parameterized constructor, named constructor baru() dan dariJson().</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p><strong>Named Constructor</strong> adalah constructor yang memiliki nama khusus selain nama kelas. Fitur ini memungkinkan kita memiliki beberapa cara berbeda untuk membuat objek dari kelas yang sama, masing-masing dengan nama yang deskriptif sesuai tujuannya.</p>
+                    
+                    <p>Dalam Dart, named constructor ditulis dengan sintaks: <code>ClassName.constructorName()</code>. Ini sangat berguna ketika kita perlu menginisialisasi objek dari berbagai sumber data atau dengan berbagai skenario. Named constructor dapat digunakan untuk:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li>Membuat objek dengan nilai default tertentu</li>
+                        <li>Membuat objek dari format data lain seperti JSON atau Map</li>
+                        <li>Mengimplementasikan pola desain seperti Factory atau Singleton</li>
+                        <li>Memberikan nama yang bermakna pada cara pembuatan objek</li>
+                    </ul>
+                    
+                    <p><strong>Perbedaan dengan Constructor Biasa:</strong> Constructor biasa (tanpa nama) hanya memiliki satu cara pembuatan objek. Named constructor memberikan fleksibilitas untuk memiliki multiple constructor dengan perilaku inisialisasi yang berbeda-beda.</p>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Dalam showroom mobil, ada beberapa cara mendapatkan mobil: mobil baru dari pabrik (dengan spesifikasi default), mobil bekas (dengan riwayat pemakaian), atau mobil impor (dengan dokumen khusus). Named constructor mencerminkan berbagai "jalur" mendapatkan mobil ini.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Named constructor tidak bisa dipanggil dengan keyword <code>new</code> jika kita ingin membuat objek const. Named constructor juga bisa bersifat factory atau const, tergantung kebutuhan.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Named constructor seperti "resep masakan" yang berbeda untuk hidangan yang sama. Misalnya, nasi goreng bisa dibuat dengan resek spesial, resep hemat, atau resep pedas. Semua menghasilkan nasi goreng, tapi dengan cara yang berbeda.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -357,7 +418,31 @@
             <div id="warna" class="materi">
                 <h2>🎨 3. Kelas Warna - Constant Constructor</h2>
                 <div class="deskripsi">
-                    <p>Constant constructor untuk membuat objek immutable (tidak bisa diubah).</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p><strong>Constant Constructor</strong> adalah constructor yang membuat objek yang bersifat immutable (tidak dapat diubah setelah dibuat). Objek yang dibuat dengan constant constructor akan ditempatkan di memori yang sama jika nilainya identik. Fenomena ini disebut <strong>canonicalization</strong>.</p>
+                    
+                    <p>Syarat mutlak untuk membuat constant constructor:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li>Semua field dalam kelas harus bersifat <code>final</code> (nilai tidak bisa diubah setelah diinisialisasi)</li>
+                        <li>Constructor harus diawali dengan keyword <code>const</code></li>
+                        <li>Tidak boleh memiliki body constructor (hanya initializer list yang diperbolehkan)</li>
+                    </ul>
+                    
+                    <p><strong>Mengapa Perlu Constant Constructor?</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Hemat Memori:</strong> Objek dengan nilai yang sama hanya dibuat sekali, menghemat penggunaan memori</li>
+                        <li><strong>Thread Safety:</strong> Karena immutable, objek aman digunakan di lingkungan multi-threading</li>
+                        <li><strong>Prediktabilitas:</strong> Nilai objek tidak akan berubah sepanjang program berjalan</li>
+                        <li><strong>Optimasi Performa:</strong> Compiler dapat melakukan berbagai optimasi pada objek const</li>
+                    </ul>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Warna dalam palet. Warna Merah dengan kode RGB(255,0,0) akan selalu sama di mana pun. Tidak perlu membuat banyak objek untuk warna merah yang sama. Dengan constant constructor, kita cukup membuat satu objek untuk warna merah dan menggunakannya di banyak tempat.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Untuk mendapatkan manfaat canonicalization, kita harus membuat objek dengan keyword <code>const</code>, bukan <code>new</code> atau tanpa keyword. Jika dibuat tanpa <code>const</code>, objek baru akan tetap dibuat meskipun nilainya sama.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Constant constructor seperti "nomor induk" yang unik. Meskipun ada banyak KTP dengan nama berbeda, setiap nomor induuk hanya satu. Objek const bekerja seperti itu - nilai yang sama menghasilkan "nomor induk" memori yang sama.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -390,7 +475,32 @@
             <div id="titik" class="materi">
                 <h2>📐 4. Kelas Titik - Initializer List</h2>
                 <div class="deskripsi">
-                    <p>Initializer list untuk memproses nilai sebelum objek dibuat.</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p><strong>Initializer List</strong> adalah fitur di Dart yang memungkinkan kita mengeksekusi kode sebelum constructor body dijalankan. Ini adalah tahap inisialisasi yang terjadi segera setelah parameter constructor diterima, tetapi sebelum kode di dalam kurung kurawal <code>{}</code> dieksekusi.</p>
+                    
+                    <p>Initializer list sangat berguna untuk:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Validasi parameter</strong> - Memeriksa apakah nilai parameter valid sebelum digunakan</li>
+                        <li><strong>Manipulasi nilai awal</strong> - Mengubah nilai parameter sebelum diassign ke field</li>
+                        <li><strong>Inisialisasi field final</strong> - Field final harus diinisialisasi sebelum constructor body, initializer list adalah tempat yang tepat</li>
+                        <li><strong>Memanggil constructor lain</strong> - Constructor chaining dengan <code>this()</code> atau <code>super()</code></li>
+                        <li><strong>Assertions</strong> - Memastikan kondisi tertentu terpenuhi</li>
+                    </ul>
+                    
+                    <p><strong>Urutan Eksekusi Constructor:</strong></p>
+                    <ol style="margin-left: 20px; color: #cbd5e1;">
+                        <li>Initializer list dijalankan (dipisahkan dengan titik dua <code>:</code> setelah parameter)</li>
+                        <li>Constructor body dijalankan (kode di dalam <code>{}</code>)</li>
+                        <li>Objek siap digunakan</li>
+                    </ol>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Saat membuat titik koordinat untuk sistem yang hanya bekerja di kuadran I (x dan y positif), initializer list bisa mengubah nilai negatif menjadi positif sebelum objek jadi. Ini seperti "penjaga pintu" yang memastikan data yang masuk sesuai aturan sebelum diizinkan masuk.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Initializer list tidak bisa mengakses <code>this</code> karena objek belum selesai dibuat. Namun, kita bisa mengakses parameter constructor. Initializer list dieksekusi dari kiri ke kanan.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Initializer list seperti "pos pemeriksaan" sebelum memasuki gedung. Semua orang diperiksa dan disaring dulu di pintu masuk (initializer list), baru setelah itu mereka bisa masuk dan beraktivitas di dalam gedung (constructor body).</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -416,7 +526,25 @@
             <div id="mahasiswa" class="materi">
                 <h2>👨‍🎓 5. Kelas Mahasiswa - Named Constructor</h2>
                 <div class="deskripsi">
-                    <p>Memiliki default constructor dan named constructor dariMap() serta tanpaNama().</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p>Kelas Mahasiswa ini mendemonstrasikan penggunaan <strong>named constructor</strong> dengan berbagai sumber data. Named constructor memberikan fleksibilitas dalam menciptakan objek dari format data yang berbeda-beda.</p>
+                    
+                    <p><strong>Tiga Cara Membuat Objek Mahasiswa:</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Default Constructor:</strong> Cara standar dengan mengisi semua parameter secara langsung. Ini adalah constructor utama yang paling sering digunakan.</li>
+                        <li><strong>Constructor dariMap():</strong> Berguna saat mengambil data dari database, API, atau file konfigurasi yang biasanya berbentuk Map (key-value pairs).</li>
+                        <li><strong>Constructor tanpaNama():</strong> Untuk situasi di mana privasi diperlukan, misalnya saat menampilkan data di forum publik tanpa menampilkan nama asli.</li>
+                    </ul>
+                    
+                    <p><strong>Keuntungan Named Constructor:</strong> Kode menjadi lebih ekspresif dan mudah dipahami. Ketika membaca <code>Mahasiswa.dariMap(data)</code>, kita langsung tahu bahwa objek dibuat dari data Map. Dibandingkan jika hanya menggunakan satu constructor, kita harus menebak-nebak dari parameter yang diberikan.</p>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Dalam sistem akademik, data mahasiswa bisa datang dari berbagai sumber: form pendaftaran (input langsung), database (Map), atau untuk keperluan statistik tanpa menampilkan identitas (anonim). Named constructor mengakomodasi semua skenario ini dengan rapi.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Named constructor dapat memanggil constructor lain dalam kelas yang sama menggunakan <code>this()</code>. Ini disebut "redirecting constructor" dan membantu menghindari duplikasi kode inisialisasi.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Named constructor seperti "jalur khusus" di bandara. Ada jalur untuk penumpang biasa (default), jalur diplomatik (dariMap), dan jalur VIP (tanpaNama). Semuanya menuju ke ruang keberangkatan yang sama, tapi dengan proses yang berbeda.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -451,7 +579,31 @@
             <div id="person" class="materi">
                 <h2>👤 6. Kelas Person - Enkapsulasi Dasar</h2>
                 <div class="deskripsi">
-                    <p>Enkapsulasi dengan getter dan setter untuk atribut private.</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p><strong>Enkapsulasi</strong> adalah salah satu pilar utama dalam Object-Oriented Programming (OOP). Konsep ini berarti menyembunyikan data internal suatu objek dari akses langsung dari luar, dan hanya menyediakan akses melalui method-method tertentu (getter dan setter).</p>
+                    
+                    <p>Dalam Dart, enkapsulasi diimplementasikan dengan:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Field private:</strong> Ditandai dengan underscore <code>_</code> di depan nama variabel. Field ini hanya bisa diakses dari dalam kelas itu sendiri.</li>
+                        <li><strong>Getter:</strong> Method yang mengembalikan nilai field private. Biasanya dinamai sama dengan field tanpa underscore.</li>
+                        <li><strong>Setter:</strong> Method yang mengubah nilai field private, biasanya dilengkapi dengan validasi.</li>
+                    </ul>
+                    
+                    <p><strong>Mengapa Enkapsulasi Penting?</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Keamanan Data:</strong> Mencegah data diubah secara sembarangan oleh kode luar</li>
+                        <li><strong>Validasi:</strong> Setter dapat memvalidasi nilai sebelum mengubah data</li>
+                        <li><strong>Fleksibilitas:</strong> Implementasi internal dapat diubah tanpa mempengaruhi kode yang menggunakan kelas</li>
+                        <li><strong>Kontrol Akses:</strong> Kita bisa menentukan data mana yang boleh dibaca, ditulis, atau keduanya</li>
+                    </ul>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Enkapsulasi seperti "ATM". Anda bisa melihat saldo (getter) dan mengambil uang (method), tapi Anda tidak bisa langsung mengubah angka saldo di mesin ATM. Semua akses harus melalui prosedur yang sudah ditentukan.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Field dengan underscore <code>_</code> bersifat private di tingkat library, bukan hanya di tingkat kelas. Artinya, field tersebut tidak bisa diakses dari file Dart lain.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Enkapsulasi seperti "koper dengan kunci". Isi koper (data) tidak bisa langsung diambil sembarang orang. Harus melalui pemilik yang membuka kunci (getter/setter) dengan prosedur yang benar.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -486,7 +638,37 @@
             <div id="produk" class="materi">
                 <h2>📦 7. Kelas Produk - Validasi pada Setter</h2>
                 <div class="deskripsi">
-                    <p>Validasi nama minimal 3 karakter dan harga > 0.</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p>Kelas Produk ini menunjukkan penerapan <strong>validasi data</strong> melalui setter. Validasi adalah proses memeriksa apakah data yang akan dimasukkan memenuhi aturan atau kriteria tertentu sebelum data tersebut benar-benar disimpan.</p>
+                    
+                    <p><strong>Mengapa Validasi Penting?</strong> Dalam aplikasi nyata, data yang tidak valid dapat menyebabkan:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li>Kerusakan logika bisnis (misal: harga negatif)</li>
+                        <li>Error saat pemrosesan data</li>
+                        <li>Inkonsistensi database</li>
+                        <li>Masalah keamanan (injection, overflow, dll)</li>
+                    </ul>
+                    
+                    <p><strong>Aturan Validasi dalam Kelas Produk:</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Nama produk:</strong> Minimal 3 karakter. Ini mencegah nama produk yang terlalu pendek seperti "PC" atau "TV" yang bisa membingungkan.</li>
+                        <li><strong>Harga produk:</strong> Harus lebih besar dari 0. Tidak masuk akal jika ada produk dengan harga nol atau negatif (kecuali dalam skenario tertentu seperti diskon, tapi itu perlu penanganan khusus).</li>
+                    </ul>
+                    
+                    <p><strong>Tempat Validasi:</strong> Validasi sebaiknya dilakukan di setter karena:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li>Setter adalah satu-satunya jalan untuk mengubah data (jika field private)</li>
+                        <li>Validasi terpusat, tidak perlu diulang di banyak tempat</li>
+                        <li>Kelas menjaga integritas datanya sendiri</li>
+                    </ul>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Saat mengisi formulir online, ada validasi seperti "nama minimal 3 karakter" atau "harga harus angka positif". Ini melindungi sistem dari data yang tidak masuk akal dan memberikan pengalaman pengguna yang lebih baik.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Setter tidak harus selalu menerima perubahan. Jika data tidak valid, setter bisa menolak perubahan (dengan tidak mengubah data) dan memberikan pesan error atau melempar exception.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Validasi di setter seperti "satpam" di pintu masuk gedung. Satpam akan memeriksa identitas setiap orang yang mau masuk. Jika identitas tidak sesuai (KTP palsu), satpam akan menolak masuk. Hanya orang dengan identitas valid yang diizinkan.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -516,7 +698,38 @@
             <div id="user" class="materi">
                 <h2>🔐 8. Kelas User - Sistem Login</h2>
                 <div class="deskripsi">
-                    <p>Enkapsulasi dengan metode login dan ganti password.</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p>Kelas User mengimplementasikan <strong>sistem autentikasi</strong> sederhana dengan enkapsulasi data sensitif (password). Ini adalah contoh penerapan enkapsulasi dalam konteks keamanan aplikasi.</p>
+                    
+                    <p><strong>Mengapa Password Harus Dienkapsulasi?</strong> Password adalah data yang sangat sensitif. Dalam aplikasi nyata:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li>Password tidak boleh bisa dibaca langsung oleh kode lain (tidak ada getter untuk password)</li>
+                        <li>Perubahan password harus melalui prosedur yang aman (verifikasi password lama)</li>
+                        <li>Password harus memenuhi kriteria keamanan tertentu (minimal panjang, kombinasi karakter, dll)</li>
+                    </ul>
+                    
+                    <p><strong>Fitur Keamanan dalam Kelas User:</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Field private:</strong> _username, _password, _email tidak bisa diakses langsung dari luar</li>
+                        <li><strong>Getter terbatas:</strong> Hanya username dan email yang bisa dibaca. Password tidak memiliki getter.</li>
+                        <li><strong>Method login:</strong> Memverifikasi kredensial tanpa mengekspos password</li>
+                        <li><strong>Method gantiPassword:</strong> Memerlukan password lama untuk verifikasi, dan memvalidasi password baru (minimal 6 karakter)</li>
+                    </ul>
+                    
+                    <p><strong>Prinsip Keamanan yang Diterapkan:</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Need to know:</strong> Hanya informasi yang diperlukan yang diekspos</li>
+                        <li><strong>Defense in depth:</strong> Validasi berlapis (password lama + syarat password baru)</li>
+                        <li><strong>Least privilege:</strong> Method hanya melakukan satu tugas spesifik</li>
+                    </ul>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Saat Anda mengganti password di media sosial, Anda diminta memasukkan password lama dulu, lalu password baru minimal 8 karakter dengan kombinasi huruf dan angka. Ini persis seperti yang kita implementasikan di kelas User.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Dalam aplikasi produksi, password tidak boleh disimpan dalam bentuk plain text seperti contoh ini. Harus di-hash menggunakan algoritma seperti bcrypt, argon2, atau SHA dengan salt.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Kelas User seperti "brankas bank". Anda bisa melihat nomor rekening (username) dan saldo (email), tapi tidak bisa melihat kode brankas (password). Untuk mengganti kode, Anda harus melalui prosedur verifikasi yang ketat.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -549,7 +762,37 @@
             <div id="rekening" class="materi">
                 <h2>🏦 9. Kelas RekeningBank - Simulasi Transaksi</h2>
                 <div class="deskripsi">
-                    <p>Enkapsulasi dengan metode deposit, tarik tunai, dan transfer.</p>
+                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
+                    <p>Kelas RekeningBank adalah simulasi sistem perbankan sederhana yang menerapkan enkapsulasi pada data keuangan yang sensitif (saldo). Ini menunjukkan bagaimana enkapsulasi melindungi integritas data dalam skenario transaksi keuangan.</p>
+                    
+                    <p><strong>Mengapa Saldo Harus Dienkapsulasi?</strong> Saldo rekening adalah data kritis yang tidak boleh sembarangan diubah. Dalam aplikasi perbankan nyata:</p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li>Tidak boleh ada kode yang bisa langsung menulis <code>rekening.saldo = 1000000</code> tanpa melalui prosedur yang benar</li>
+                        <li>Setiap perubahan saldo harus tercatat (audit trail)</li>
+                        <li>Harus ada validasi untuk mencegah transaksi ilegal (saldo negatif, melebihi limit, dll)</li>
+                    </ul>
+                    
+                    <p><strong>Fitur Transaksi yang Diimplementasikan:</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>deposit():</strong> Menambah saldo. Hanya bisa dilakukan dengan jumlah positif.</li>
+                        <li><strong>tarik():</strong> Mengurangi saldo. Memerlukan saldo cukup dan jumlah positif.</li>
+                        <li><strong>transfer():</strong> Memindahkan dana ke rekening lain. Melibatkan validasi saldo pengirim dan memodifikasi dua rekening sekaligus.</li>
+                    </ul>
+                    
+                    <p><strong>Validasi dalam Transaksi:</strong></p>
+                    <ul style="margin-left: 20px; color: #cbd5e1;">
+                        <li><strong>Jumlah positif:</strong> Tidak ada transaksi dengan jumlah nol atau negatif</li>
+                        <li><strong>Saldo cukup:</strong> Untuk tarik dan transfer, saldo harus >= jumlah yang diminta</li>
+                        <li><strong>Integritas transaksi:</strong> Dalam transfer, kedua rekening harus konsisten (pengirim berkurang, penerima bertambah)</li>
+                    </ul>
+                    
+                    <p><strong>Contoh Dunia Nyata:</strong> Saat Anda transfer uang melalui mobile banking, Anda tidak bisa langsung mengubah saldo. Anda harus melalui menu transfer, memasukkan nomor rekening tujuan, jumlah, dan PIN. Semua ini adalah bentuk enkapsulasi yang melindungi data keuangan Anda.</p>
+                </div>
+                <div class="highlight">
+                    📌 <strong>POIN PENTING:</strong> Dalam aplikasi perbankan nyata, method transfer harus bersifat <strong>atomik</strong> - jika salah satu operasi gagal (misal: rekening tujuan error), maka seluruh transaksi harus dibatalkan (rollback). Ini biasanya diimplementasikan dengan database transaction.
+                </div>
+                <div class="note">
+                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Kelas RekeningBank seperti "ATM". Anda bisa menyetor (deposit), mengambil (tarik), dan transfer uang. Tapi Anda tidak bisa membuka mesin ATM dan mengambil uang seenaknya. Semua transaksi harus melalui prosedur yang sudah ditentukan.</p>
                 </div>
                 <div class="code-container">
                     <div class="code-header">
@@ -585,15 +828,20 @@
             <div style="margin-top: 40px; padding: 20px; background: #1e293b; border-radius: 10px;">
                 <h3 style="color: #7dd3fc; margin-bottom: 15px;">📌 KESIMPULAN</h3>
                 <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 10px;">✅ Constructor memungkinkan pembuatan objek dengan nilai awal spesifik</li>
-                    <li style="margin-bottom: 10px;">✅ Enkapsulasi dengan getter & setter menjaga keamanan data</li>
-                    <li style="margin-bottom: 10px;">✅ Kode lebih terstruktur, modular, dan mudah dipelihara</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Constructor</strong> adalah fondasi pembuatan objek - memastikan objek lahir dengan data yang valid</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Named constructor</strong> memberikan fleksibilitas dalam berbagai skenario inisialisasi</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Constant constructor</strong> menghemat memori dengan canonicalization untuk objek immutable</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Initializer list</strong> memungkinkan validasi/manipulasi data sebelum objek jadi</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Enkapsulasi</strong> dengan getter & setter menjaga keamanan dan integritas data</li>
+                    <li style="margin-bottom: 10px;">✅ <strong>Validasi pada setter</strong> mencegah data tidak valid masuk ke dalam objek</li>
+                    <li style="margin-bottom: 10px;">✅ Semua konsep ini membuat kode lebih <strong>terstruktur, aman, dan mudah dipelihara</strong></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer">
-            <p>© 2024 - USMAN YAKIN TRIO SINADA | NIM: 251410006 | Kelas: SI2A</p>
+            <p>© 2024 - <strong>USMAN YAKIN TRIO SINADA</strong> | NIM: 251410006 | Kelas: SI2A</p>
+            <p style="margin-top: 5px; font-size: 0.9em;">✨ Tema Malam dengan Bintang - Implementasi Constructor dan Enkapsulasi ✨</p>
         </div>
     </div>
 </body>
