@@ -1,848 +1,567 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMPLEMENTASI CONSTRUCTOR DAN ENKAPSULASI - USMAN YAKIN</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0b0f1e;
-            color: #e2e8f0;
-            line-height: 1.6;
-        }
-
-        /* ===== LANGIT MALAM DENGAN BINTANG ===== */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0b0f1e;
-            z-index: -1;
-        }
-
-        .stars::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            background-image: 
-                radial-gradient(2px 2px at 15px 60px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 72px 436px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 155px 128px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 280px 345px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 450px 175px, #fff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 580px 400px, #ffd700, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 720px 220px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 860px 550px, #fff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 950px 120px, #87ceeb, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 1100px 380px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat;
-            animation: twinkling 4s ease-in-out infinite;
-        }
-
-        @keyframes twinkling {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .moon {
-            position: fixed;
-            top: 30px;
-            right: 50px;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #f9f3d9, #d4c4a8);
-            box-shadow: 0 0 50px rgba(255, 255, 200, 0.5);
-            z-index: -1;
-        }
-
-        .moon::before {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,200,0.3), transparent 70%);
-            filter: blur(10px);
-        }
-
-        .moon::after {
-            content: "";
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #0b0f1e;
-            box-shadow: inset -5px -5px 15px rgba(0,0,0,0.5);
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-bottom: 1px solid rgba(125, 211, 252, 0.3);
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            color: #7dd3fc;
-            text-shadow: 0 0 20px #7dd3fc;
-        }
-
-        .header h3 {
-            color: #94a3b8;
-            margin-bottom: 15px;
-            font-weight: 300;
-        }
-
-        .header .info {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid #7dd3fc;
-            padding: 10px 30px;
-            border-radius: 50px;
-            display: inline-block;
-            color: #fff;
-        }
-
-        .header .info strong {
-            color: #7dd3fc;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        /* Daftar isi */
-        .daftar-isi {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid #334155;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .daftar-isi a {
-            color: #94a3b8;
-            text-decoration: none;
-            padding: 8px 18px;
-            border: 1px solid #475569;
-            border-radius: 30px;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-
-        .daftar-isi a:hover {
-            background: #7dd3fc;
-            color: #0f172a;
-            border-color: #7dd3fc;
-        }
-
-        /* Setiap materi */
-        .materi {
-            margin-bottom: 60px;
-            padding: 30px;
-            background: rgba(30, 41, 59, 0.3);
-            border: 1px solid #334155;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .materi:hover {
-            border-color: #7dd3fc;
-            box-shadow: 0 0 30px rgba(125, 211, 252, 0.2);
-        }
-
-        .materi h2 {
-            color: #7dd3fc;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #334155;
-            font-size: 1.8em;
-        }
-
-        .materi .deskripsi {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #7dd3fc;
-        }
-
-        .materi .deskripsi p {
-            margin: 12px 0;
-            text-align: justify;
-        }
-
-        .materi .deskripsi strong {
-            color: #7dd3fc;
-        }
-
-        .materi .highlight {
-            background: #2d3b4f;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            color: #fcd34d;
-            border: 1px dashed #7dd3fc;
-            font-style: italic;
-        }
-
-        .materi .note {
-            background: rgba(125, 211, 252, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border: 1px solid #7dd3fc;
-        }
-
-        .materi .note p {
-            margin: 5px 0;
-        }
-
-        /* Code container */
-        .code-container {
-            background: #0b0f1c;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .code-header {
-            background: #1e293b;
-            padding: 12px 18px;
-            color: #fff;
-            font-weight: bold;
-            border-bottom: 1px solid #334155;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .code-badge {
-            background: #7dd3fc;
-            color: #0f172a;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
-
-        .code-content {
-            padding: 20px;
-            overflow-x: auto;
-        }
-
-        .code-content pre {
-            margin: 0;
-            color: #a5b4fc;
-            font-family: 'Courier New', monospace;
+<!DOCTYPE html> 
+<html lang="id"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title> IMPLEMENTASI CONSTRUKTOR & ENKAPSULASI </title> 
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet"> 
+    <style> 
+        body{ 
+            margin:0; 
+            font-family:'Orbitron',sans-serif; 
+            background:#000; 
+            color:#00ff9f; 
+            background-image: linear-gradient(rgba(0,255,150,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,150,0.08) 1px, transparent 1px); 
+            background-size:40px 40px; 
+        } 
+        header{ 
+            text-align:center; 
+            padding:40px; 
+            background:#010a05; 
+            border-bottom:3px solid #00ff9f; 
+            box-shadow:0 0 25px #00ff9f; 
+        } 
+        header h1{ 
+            font-size:26px; 
+            color:#00ff9f; 
+            text-shadow:0 0 10px #00ff9f,0 0 30px #00ff9f; 
+        } 
+        header p{ 
+            color:#7affc7; 
+        } 
+        .container{ 
+            max-width:1100px; 
+            margin:auto; 
+            padding:40px 20px; 
+        } 
+        .card{ 
+            background:rgba(0,20,10,0.85); 
+            padding:30px; 
+            margin-bottom:40px; 
+            border:1px solid #00ff9f; 
+            border-radius:10px; 
+            box-shadow:0 0 15px #00ff9f inset,0 0 20px #00ff9f; 
+            transition:0.3s; 
+            position: relative;
+        } 
+        .card:hover{ 
+            box-shadow:0 0 25px #00ff9f,0 0 60px #00ff9f; 
+            transform:translateY(-6px); 
+        } 
+        h2{ 
+            color:#00ff9f; 
+            margin-bottom:20px; 
+            text-shadow:0 0 10px #00ff9f; 
+        } 
+        p,li{ 
+            line-height:1.7; 
+            color:#b8ffe7; 
+        } 
+        pre{ 
+            background:#000; 
+            color:#00ff9f; 
+            padding:20px; 
+            border-radius:10px; 
+            border:1px solid #00ff9f; 
+            box-shadow:0 0 10px #00ff9f inset; 
+            overflow-x:auto; 
             font-size: 14px;
             white-space: pre-wrap;
             word-wrap: break-word;
+        } 
+        .comment-box{ 
+            background:#000; 
+            padding:20px; 
+            border-radius:10px; 
+            border:1px solid #00ff9f; 
+            box-shadow:0 0 20px #00ff9f; 
+            margin-bottom:40px; 
+        } 
+        .btn-group{ 
+            display:flex; 
+            flex-wrap:wrap; 
+            gap:10px; 
+            margin:20px 0; 
+        } 
+        button{ 
+            background:#00ff9f; 
+            color:black; 
+            border:none; 
+            padding:10px 20px; 
+            cursor:pointer; 
+            box-shadow:0 0 10px #00ff9f; 
+            font-family:'Orbitron'; 
+            margin-right:10px; 
+            margin-top:10px; 
+            transition: 0.3s;
+            font-weight: bold;
+        } 
+        button:hover{ 
+            box-shadow:0 0 20px #00ff9f,0 0 40px #00ff9f; 
+            transform: scale(1.05);
+        } 
+        
+        /* MODAL POPUP STYLES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
         }
-
-        /* Warna syntax */
-        .comment { color: #6b7280; }
-        .keyword { color: #7dd3fc; }
-        .string { color: #fcd34d; }
-        .type { color: #6ee7b7; }
-
-        .footer {
-            background: #0f172a;
-            border-top: 1px solid #334155;
-            padding: 20px;
-            text-align: center;
-            color: #94a3b8;
+        
+        .modal-content {
+            width: 95%;
+            height: 95%;
+            background: #0a0a0a;
+            border: 3px solid #00ff9f;
+            border-radius: 15px;
+            box-shadow: 0 0 50px #00ff9f, 0 0 100px #00ff9f inset;
+            position: relative;
+            animation: glowPulse 2s infinite;
         }
-    </style>
-</head>
-<body>
-    <div class="stars"></div>
-    <div class="moon"></div>
+        
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 30px #00ff9f, 0 0 60px #00ff9f inset; }
+            50% { box-shadow: 0 0 60px #00ff9f, 0 0 100px #00ff9f inset; }
+            100% { box-shadow: 0 0 30px #00ff9f, 0 0 60px #00ff9f inset; }
+        }
+        
+        .modal-header {
+            position: absolute;
+            top: -40px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #00ff9f;
+            font-size: 18px;
+            text-shadow: 0 0 10px #00ff9f;
+        }
+        
+        .modal-title {
+            background: #000;
+            padding: 10px 20px;
+            border: 2px solid #00ff9f;
+            border-radius: 30px;
+            box-shadow: 0 0 20px #00ff9f;
+        }
+        
+        .modal-close {
+            width: 50px;
+            height: 50px;
+            background: #00ff9f;
+            border: 3px solid #000;
+            border-radius: 50%;
+            color: black;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px #00ff9f;
+            transition: 0.3s;
+        }
+        
+        .modal-close:hover {
+            transform: scale(1.2) rotate(90deg);
+            box-shadow: 0 0 50px #00ff9f;
+        }
+        
+        .modal-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+            background: white;
+        }
+        
+        footer{ 
+            text-align:center; 
+            padding:20px; 
+            background:#010a05; 
+            border-top:3px solid #00ff9f; 
+            box-shadow:0 0 20px #00ff9f; 
+            color:#7affc7; 
+        } 
 
-    <div class="container">
-        <div class="header">
-            <h1>IMPLEMENTASI CONSTRUCTOR & ENKAPSULASI</h1>
-            <h3>PEMROGRAMAN DART - OBJECT ORIENTED PROGRAMMING</h3>
-            <div class="info">
-                <strong>USMAN YAKIN TRIO SINADA</strong> | NIM: 251410006 | Kelas: SI2A
+        .status-same {
+            display: inline-block;
+            background: #00ff9f;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+    </style> 
+</head> 
+<body> 
+    <header> 
+        <h1>🔴 CYBER VIRUS - OOP DART REPORT</h1> 
+        <p>USMAN YAKIN TRIO SINADA | NIM: 251410006 | KELAS: SI2A</p> 
+    </header> 
+    
+    <!-- MODAL POPUP (SATU UNTUK SEMUA) -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">Demo Constructor & Enkapsulasi</span>
+                <div class="modal-close" onclick="closeModal()">×</div>
             </div>
+            <iframe class="modal-iframe" id="modalIframe" src="about:blank" allow="fullscreen"></iframe>
         </div>
+    </div>
+    
+    <div class="container"> 
+        <!-- PENGERTIAN OOP -->
+        <div class="comment-box"> 
+            <h2>💀 1. PENGERTIAN OOP</h2> 
+            <p>Object Oriented Programming (OOP) adalah paradigma pemrograman yang menggunakan objek sebagai dasar perancangan program. Pendekatan ini memungkinkan kode menjadi lebih terstruktur, modular, dan mudah dikembangkan.</p> 
+        </div> 
 
-        <div class="content">
-            <div class="daftar-isi">
-                <a href="#buku">📚 Buku</a>
-                <a href="#mobil">🚗 Mobil</a>
-                <a href="#warna">🎨 Warna</a>
-                <a href="#titik">📐 Titik</a>
-                <a href="#mahasiswa">👨‍🎓 Mahasiswa</a>
-                <a href="#person">👤 Person</a>
-                <a href="#produk">📦 Produk</a>
-                <a href="#user">🔐 User</a>
-                <a href="#rekening">🏦 Rekening</a>
-            </div>
+        <!-- KELAS BUKU - Constructor Dasar -->
+        <div class="card"> 
+            <h2>📚 2. KELAS BUKU - Constructor Dasar</h2> 
+            <p><b>Constructor</b> adalah method khusus yang dipanggil saat objek dibuat. Parameterized constructor menerima parameter untuk mengisi nilai awal atribut.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-            <!-- 1. BUKU -->
-            <div id="buku" class="materi">
-                <h2>📚 1. Kelas Buku - Constructor Dasar</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p><strong>Constructor</strong> adalah method spesial yang secara otomatis dipanggil ketika sebuah objek dibuat dari suatu kelas. Tujuan utamanya adalah untuk menginisialisasi nilai awal dari atribut-atribut yang dimiliki oleh kelas tersebut. Dalam pemrograman berorientasi objek, constructor memegang peranan penting karena memastikan bahwa setiap objek yang diciptakan berada dalam keadaan yang valid dan siap digunakan.</p>
-                    
-                    <p><strong>Parameterized Constructor</strong> adalah constructor yang menerima parameter untuk mengisi nilai awal atribut. Dalam Dart, kita bisa menggunakan sintaks <code>this.namaAtribut</code> pada parameter constructor untuk secara langsung mengisi nilai atribut tanpa perlu menulis kode tambahan di dalam body constructor. Ini dikenal dengan istilah "initializing formal parameters".</p>
-                    
-                    <p><strong>Mengapa Constructor Penting?</strong> Bayangkan jika kita harus mengisi nilai atribut satu per satu setelah objek dibuat. Ini rentan terhadap kesalahan lupa mengisi atribut penting, atau bahkan inkonsistensi data. Constructor memaksa kita untuk menyediakan data yang diperlukan sejak awal, sehingga objek selalu dalam keadaan lengkap dan valid.</p>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Saat mendata buku di perpustakaan, setiap buku pasti memiliki judul. Tidak ada buku tanpa judul. Dengan constructor, kita memastikan bahwa setiap objek Buku yang dibuat harus memiliki judul. Ini mencerminkan aturan bisnis "setiap buku harus memiliki judul" langsung ke dalam kode.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Constructor memiliki nama yang sama dengan nama kelas. Tidak memiliki tipe return (bahkan void tidak diperbolehkan). Dalam Dart, keyword <code>new</code> bersifat opsional saat memanggil constructor.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Constructor seperti "kartu identitas" saat lahir. Setiap bayi yang lahir harus memiliki nama, tanggal lahir, dan orang tua. Constructor memastikan data dasar ini tercatat sebelum bayi (objek) bisa berinteraksi dengan dunia.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 buku.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="comment">// Nama   : USMAN YAKIN TRIO SINADA</span>
-<span class="comment">// NIM    : 251410006</span>
-<span class="comment">// Kelas  : SI2A</span>
+class Buku {
+  String judul;
 
-<span class="keyword">class</span> <span class="type">Buku</span> {
-  <span class="type">String</span> judul;
-
-  <span class="comment">// Parameterized Constructor</span>
-  <span class="type">Buku</span>(<span class="keyword">this</span>.judul);
+  // Parameterized Constructor
+  Buku(this.judul);
 }
 
-<span class="keyword">void</span> main() {
-  <span class="comment">// Membuat objek dari kelas Buku</span>
-  <span class="type">Buku</span> buku1 = <span class="type">Buku</span>(<span class="string">"Pemrograman Dart untuk Pemula"</span>);
-  <span class="comment">// Menampilkan judul buku</span>
-  print(<span class="string">"Judul Buku: ${buku1.judul}"</span>);
-}</pre>
-                    </div>
-                </div>
+void main() {
+  // Membuat objek dari kelas Buku
+  Buku buku1 = Buku("Pemrograman Dart untuk Pemula");
+  
+  // Menampilkan judul buku
+  print("Judul Buku: ${buku1.judul}");
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=20aadb8c8587ab3cc1d4bf32cefaee37&theme=dark&run=true', 'Demo Kelas Buku')">📚 JALANKAN BUKU (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 2. MOBIL -->
-            <div id="mobil" class="materi">
-                <h2>🚗 2. Kelas Mobil - Named Constructor</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p><strong>Named Constructor</strong> adalah constructor yang memiliki nama khusus selain nama kelas. Fitur ini memungkinkan kita memiliki beberapa cara berbeda untuk membuat objek dari kelas yang sama, masing-masing dengan nama yang deskriptif sesuai tujuannya.</p>
-                    
-                    <p>Dalam Dart, named constructor ditulis dengan sintaks: <code>ClassName.constructorName()</code>. Ini sangat berguna ketika kita perlu menginisialisasi objek dari berbagai sumber data atau dengan berbagai skenario. Named constructor dapat digunakan untuk:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li>Membuat objek dengan nilai default tertentu</li>
-                        <li>Membuat objek dari format data lain seperti JSON atau Map</li>
-                        <li>Mengimplementasikan pola desain seperti Factory atau Singleton</li>
-                        <li>Memberikan nama yang bermakna pada cara pembuatan objek</li>
-                    </ul>
-                    
-                    <p><strong>Perbedaan dengan Constructor Biasa:</strong> Constructor biasa (tanpa nama) hanya memiliki satu cara pembuatan objek. Named constructor memberikan fleksibilitas untuk memiliki multiple constructor dengan perilaku inisialisasi yang berbeda-beda.</p>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Dalam showroom mobil, ada beberapa cara mendapatkan mobil: mobil baru dari pabrik (dengan spesifikasi default), mobil bekas (dengan riwayat pemakaian), atau mobil impor (dengan dokumen khusus). Named constructor mencerminkan berbagai "jalur" mendapatkan mobil ini.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Named constructor tidak bisa dipanggil dengan keyword <code>new</code> jika kita ingin membuat objek const. Named constructor juga bisa bersifat factory atau const, tergantung kebutuhan.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Named constructor seperti "resep masakan" yang berbeda untuk hidangan yang sama. Misalnya, nasi goreng bisa dibuat dengan resek spesial, resep hemat, atau resep pedas. Semua menghasilkan nasi goreng, tapi dengan cara yang berbeda.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 mobil.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">Mobil</span> {
-  <span class="type">String</span>? merk;
-  <span class="type">int</span>? tahun;
+        <!-- KELAS MOBIL - Named Constructor -->
+        <div class="card"> 
+            <h2>🚗 3. KELAS MOBIL - Named Constructor</h2> 
+            <p><b>Named constructor</b> memberikan nama khusus pada constructor untuk berbagai skenario pembuatan objek.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="comment">// Parameterized Constructor</span>
-  <span class="type">Mobil</span>(<span class="keyword">this</span>.merk, <span class="keyword">this</span>.tahun);
+class Mobil {
+  String? merk;
+  int? tahun;
 
-  <span class="comment">// Named Constructor: Mobil Baru</span>
-  <span class="type">Mobil</span>.baru() {
-    merk = <span class="string">'Nissan Skyline GT-R R34'</span>;
+  // Parameterized Constructor
+  Mobil(this.merk, this.tahun);
+
+  // Named Constructor: Mobil Baru
+  Mobil.baru() {
+    merk = 'Nissan Skyline GT-R R34';
     tahun = 2002;
   }
 
-  <span class="comment">// Named Constructor: dari JSON</span>
-  <span class="type">Mobil</span>.dariJson(<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">dynamic</span>&gt; json) {
-    merk = json[<span class="string">'merk'</span>];
-    tahun = json[<span class="string">'tahun'</span>];
+  // Named Constructor: dari JSON
+  Mobil.dariJson(Map&lt;String, dynamic&gt; json) {
+    merk = json['merk'];
+    tahun = json['tahun'];
   }
-}</pre>
-                    </div>
-                </div>
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=b46846b773d7a3224f23a99e2d6001e2&theme=dark&run=true', 'Demo Kelas Mobil')">🚗 JALANKAN MOBIL (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 3. WARNA -->
-            <div id="warna" class="materi">
-                <h2>🎨 3. Kelas Warna - Constant Constructor</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p><strong>Constant Constructor</strong> adalah constructor yang membuat objek yang bersifat immutable (tidak dapat diubah setelah dibuat). Objek yang dibuat dengan constant constructor akan ditempatkan di memori yang sama jika nilainya identik. Fenomena ini disebut <strong>canonicalization</strong>.</p>
-                    
-                    <p>Syarat mutlak untuk membuat constant constructor:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li>Semua field dalam kelas harus bersifat <code>final</code> (nilai tidak bisa diubah setelah diinisialisasi)</li>
-                        <li>Constructor harus diawali dengan keyword <code>const</code></li>
-                        <li>Tidak boleh memiliki body constructor (hanya initializer list yang diperbolehkan)</li>
-                    </ul>
-                    
-                    <p><strong>Mengapa Perlu Constant Constructor?</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Hemat Memori:</strong> Objek dengan nilai yang sama hanya dibuat sekali, menghemat penggunaan memori</li>
-                        <li><strong>Thread Safety:</strong> Karena immutable, objek aman digunakan di lingkungan multi-threading</li>
-                        <li><strong>Prediktabilitas:</strong> Nilai objek tidak akan berubah sepanjang program berjalan</li>
-                        <li><strong>Optimasi Performa:</strong> Compiler dapat melakukan berbagai optimasi pada objek const</li>
-                    </ul>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Warna dalam palet. Warna Merah dengan kode RGB(255,0,0) akan selalu sama di mana pun. Tidak perlu membuat banyak objek untuk warna merah yang sama. Dengan constant constructor, kita cukup membuat satu objek untuk warna merah dan menggunakannya di banyak tempat.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Untuk mendapatkan manfaat canonicalization, kita harus membuat objek dengan keyword <code>const</code>, bukan <code>new</code> atau tanpa keyword. Jika dibuat tanpa <code>const</code>, objek baru akan tetap dibuat meskipun nilainya sama.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Constant constructor seperti "nomor induk" yang unik. Meskipun ada banyak KTP dengan nama berbeda, setiap nomor induuk hanya satu. Objek const bekerja seperti itu - nilai yang sama menghasilkan "nomor induk" memori yang sama.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 warna.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">Warna</span> {
-  <span class="keyword">final</span> <span class="type">int</span> r, g, b;
+        <!-- KELAS WARNA - Constant Constructor -->
+        <div class="card"> 
+            <h2>🎨 4. KELAS WARNA - Constant Constructor</h2> 
+            <p><b>Constant constructor</b> membuat objek yang tidak bisa diubah (immutable) dan dioptimasi memory.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="comment">// Constant Constructor</span>
-  <span class="keyword">const</span> <span class="type">Warna</span>(<span class="keyword">this</span>.r, <span class="keyword">this</span>.g, <span class="keyword">this</span>.b);
+class Warna {
+  final int r, g, b;
 
-  <span class="meta">@override</span>
-  <span class="type">String</span> toString() {
-    <span class="keyword">return</span> <span class="string">'Warna(r: $r, g: $g, b: $b)'</span>;
+  // Constant Constructor
+  const Warna(this.r, this.g, this.b);
+
+  @override
+  String toString() {
+    return 'Warna(r: $r, g: $g, b: $b)';
   }
 }
 
-<span class="keyword">void</span> main() {
-  <span class="keyword">const</span> warnaMerah = <span class="type">Warna</span>(255, 0, 0);
-  <span class="keyword">const</span> warnaHijau = <span class="type">Warna</span>(0, 255, 0);
+void main() {
+  const warnaMerah = Warna(255, 0, 0);
+  const warnaHijau = Warna(0, 255, 0);
+  
   print(warnaMerah);
-}</pre>
-                    </div>
-                </div>
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=8a9568e1420a9631dfbba8d67d19a25b&theme=dark&run=true', 'Demo Kelas Warna')">🎨 JALANKAN WARNA (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 4. TITIK -->
-            <div id="titik" class="materi">
-                <h2>📐 4. Kelas Titik - Initializer List</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p><strong>Initializer List</strong> adalah fitur di Dart yang memungkinkan kita mengeksekusi kode sebelum constructor body dijalankan. Ini adalah tahap inisialisasi yang terjadi segera setelah parameter constructor diterima, tetapi sebelum kode di dalam kurung kurawal <code>{}</code> dieksekusi.</p>
-                    
-                    <p>Initializer list sangat berguna untuk:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Validasi parameter</strong> - Memeriksa apakah nilai parameter valid sebelum digunakan</li>
-                        <li><strong>Manipulasi nilai awal</strong> - Mengubah nilai parameter sebelum diassign ke field</li>
-                        <li><strong>Inisialisasi field final</strong> - Field final harus diinisialisasi sebelum constructor body, initializer list adalah tempat yang tepat</li>
-                        <li><strong>Memanggil constructor lain</strong> - Constructor chaining dengan <code>this()</code> atau <code>super()</code></li>
-                        <li><strong>Assertions</strong> - Memastikan kondisi tertentu terpenuhi</li>
-                    </ul>
-                    
-                    <p><strong>Urutan Eksekusi Constructor:</strong></p>
-                    <ol style="margin-left: 20px; color: #cbd5e1;">
-                        <li>Initializer list dijalankan (dipisahkan dengan titik dua <code>:</code> setelah parameter)</li>
-                        <li>Constructor body dijalankan (kode di dalam <code>{}</code>)</li>
-                        <li>Objek siap digunakan</li>
-                    </ol>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Saat membuat titik koordinat untuk sistem yang hanya bekerja di kuadran I (x dan y positif), initializer list bisa mengubah nilai negatif menjadi positif sebelum objek jadi. Ini seperti "penjaga pintu" yang memastikan data yang masuk sesuai aturan sebelum diizinkan masuk.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Initializer list tidak bisa mengakses <code>this</code> karena objek belum selesai dibuat. Namun, kita bisa mengakses parameter constructor. Initializer list dieksekusi dari kiri ke kanan.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Initializer list seperti "pos pemeriksaan" sebelum memasuki gedung. Semua orang diperiksa dan disaring dulu di pintu masuk (initializer list), baru setelah itu mereka bisa masuk dan beraktivitas di dalam gedung (constructor body).</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 titik.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">Titik</span> {
-  <span class="keyword">final</span> <span class="type">double</span> x, y;
+        <!-- KELAS TITIK - Initializer List -->
+        <div class="card"> 
+            <h2>📐 5. KELAS TITIK - Initializer List</h2> 
+            <p><b>Initializer list</b> mengeksekusi kode sebelum constructor body untuk validasi atau manipulasi nilai awal.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="comment">// Initializer list untuk memastikan koordinat bernilai absolut</span>
-  <span class="type">Titik</span>(<span class="type">double</span> x, <span class="type">double</span> y)
-      : x = x.<span class="type">abs</span>(),
-        y = y.<span class="type">abs</span>() {
-    print(<span class="string">'Titik (${this.x}, ${this.y}) berhasil dibuat.'</span>);
+class Titik {
+  final double x, y;
+
+  // Initializer list untuk memastikan koordinat bernilai absolut
+  Titik(double x, double y)
+      : x = x.abs(),
+        y = y.abs() {
+    print('Titik (${this.x}, ${this.y}) berhasil dibuat.');
   }
-}</pre>
-                    </div>
-                </div>
+}
+
+void main() {
+  Titik titik1 = Titik(5.0, 7.0);
+  Titik titik2 = Titik(-3.5, -8.0);
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=9f5d396d2410b032cca78e0b08521604&theme=dark&run=true', 'Demo Kelas Titik')">📐 JALANKAN TITIK (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 5. MAHASISWA -->
-            <div id="mahasiswa" class="materi">
-                <h2>👨‍🎓 5. Kelas Mahasiswa - Named Constructor</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p>Kelas Mahasiswa ini mendemonstrasikan penggunaan <strong>named constructor</strong> dengan berbagai sumber data. Named constructor memberikan fleksibilitas dalam menciptakan objek dari format data yang berbeda-beda.</p>
-                    
-                    <p><strong>Tiga Cara Membuat Objek Mahasiswa:</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Default Constructor:</strong> Cara standar dengan mengisi semua parameter secara langsung. Ini adalah constructor utama yang paling sering digunakan.</li>
-                        <li><strong>Constructor dariMap():</strong> Berguna saat mengambil data dari database, API, atau file konfigurasi yang biasanya berbentuk Map (key-value pairs).</li>
-                        <li><strong>Constructor tanpaNama():</strong> Untuk situasi di mana privasi diperlukan, misalnya saat menampilkan data di forum publik tanpa menampilkan nama asli.</li>
-                    </ul>
-                    
-                    <p><strong>Keuntungan Named Constructor:</strong> Kode menjadi lebih ekspresif dan mudah dipahami. Ketika membaca <code>Mahasiswa.dariMap(data)</code>, kita langsung tahu bahwa objek dibuat dari data Map. Dibandingkan jika hanya menggunakan satu constructor, kita harus menebak-nebak dari parameter yang diberikan.</p>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Dalam sistem akademik, data mahasiswa bisa datang dari berbagai sumber: form pendaftaran (input langsung), database (Map), atau untuk keperluan statistik tanpa menampilkan identitas (anonim). Named constructor mengakomodasi semua skenario ini dengan rapi.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Named constructor dapat memanggil constructor lain dalam kelas yang sama menggunakan <code>this()</code>. Ini disebut "redirecting constructor" dan membantu menghindari duplikasi kode inisialisasi.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Named constructor seperti "jalur khusus" di bandara. Ada jalur untuk penumpang biasa (default), jalur diplomatik (dariMap), dan jalur VIP (tanpaNama). Semuanya menuju ke ruang keberangkatan yang sama, tapi dengan proses yang berbeda.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 mahasiswa.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">Mahasiswa</span> {
-  <span class="type">String</span> nama;
-  <span class="type">String</span> nim;
-  <span class="type">String</span> jurusan;
-  <span class="type">String</span> kelas;
+        <!-- KELAS MAHASISWA - Named Constructor -->
+        <div class="card"> 
+            <h2>👨‍🎓 6. KELAS MAHASISWA - Named Constructor</h2> 
+            <p><b>Named constructor</b> dengan berbagai sumber data: dari input langsung, dari Map, dan anonim.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="comment">// Default Constructor</span>
-  <span class="type">Mahasiswa</span>(<span class="keyword">this</span>.nama, <span class="keyword">this</span>.nim, <span class="keyword">this</span>.jurusan, <span class="keyword">this</span>.kelas);
+class Mahasiswa {
+  String nama;
+  String nim;
+  String jurusan;
+  String kelas;
 
-  <span class="comment">// Named Constructor: dari Map</span>
-  <span class="type">Mahasiswa</span>.dariMap(<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; data)
-      : nama = data[<span class="string">'nama'</span>]!,
-        nim = data[<span class="string">'nim'</span>]!,
-        jurusan = data[<span class="string">'jurusan'</span>]!,
-        kelas = data[<span class="string">'kelas'</span>]!;
+  // Default Constructor
+  Mahasiswa(this.nama, this.nim, this.jurusan, this.kelas);
 
-  <span class="comment">// Named Constructor: Tanpa Nama</span>
-  <span class="type">Mahasiswa</span>.tanpaNama(<span class="keyword">this</span>.nim, <span class="keyword">this</span>.jurusan, <span class="keyword">this</span>.kelas) : nama = <span class="string">'*** ANONIM ***'</span>;
-}</pre>
-                    </div>
-                </div>
+  // Named Constructor: dari Map
+  Mahasiswa.dariMap(Map&lt;String, String&gt; data)
+      : nama = data['nama']!,
+        nim = data['nim']!,
+        jurusan = data['jurusan']!,
+        kelas = data['kelas']!;
+
+  // Named Constructor: Tanpa Nama
+  Mahasiswa.tanpaNama(this.nim, this.jurusan, this.kelas) : nama = '*** ANONIM ***';
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=f579ffe6fa84f15b06f209dad9d14019&theme=dark&run=true', 'Demo Kelas Mahasiswa')">👨‍🎓 JALANKAN MAHASISWA (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 6. PERSON -->
-            <div id="person" class="materi">
-                <h2>👤 6. Kelas Person - Enkapsulasi Dasar</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p><strong>Enkapsulasi</strong> adalah salah satu pilar utama dalam Object-Oriented Programming (OOP). Konsep ini berarti menyembunyikan data internal suatu objek dari akses langsung dari luar, dan hanya menyediakan akses melalui method-method tertentu (getter dan setter).</p>
-                    
-                    <p>Dalam Dart, enkapsulasi diimplementasikan dengan:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Field private:</strong> Ditandai dengan underscore <code>_</code> di depan nama variabel. Field ini hanya bisa diakses dari dalam kelas itu sendiri.</li>
-                        <li><strong>Getter:</strong> Method yang mengembalikan nilai field private. Biasanya dinamai sama dengan field tanpa underscore.</li>
-                        <li><strong>Setter:</strong> Method yang mengubah nilai field private, biasanya dilengkapi dengan validasi.</li>
-                    </ul>
-                    
-                    <p><strong>Mengapa Enkapsulasi Penting?</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Keamanan Data:</strong> Mencegah data diubah secara sembarangan oleh kode luar</li>
-                        <li><strong>Validasi:</strong> Setter dapat memvalidasi nilai sebelum mengubah data</li>
-                        <li><strong>Fleksibilitas:</strong> Implementasi internal dapat diubah tanpa mempengaruhi kode yang menggunakan kelas</li>
-                        <li><strong>Kontrol Akses:</strong> Kita bisa menentukan data mana yang boleh dibaca, ditulis, atau keduanya</li>
-                    </ul>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Enkapsulasi seperti "ATM". Anda bisa melihat saldo (getter) dan mengambil uang (method), tapi Anda tidak bisa langsung mengubah angka saldo di mesin ATM. Semua akses harus melalui prosedur yang sudah ditentukan.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Field dengan underscore <code>_</code> bersifat private di tingkat library, bukan hanya di tingkat kelas. Artinya, field tersebut tidak bisa diakses dari file Dart lain.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Enkapsulasi seperti "koper dengan kunci". Isi koper (data) tidak bisa langsung diambil sembarang orang. Harus melalui pemilik yang membuka kunci (getter/setter) dengan prosedur yang benar.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 person.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">Person</span> {
-  <span class="type">String</span> <span class="keyword">_nama</span>; <span class="comment">// Private field</span>
-  <span class="type">int</span> <span class="keyword">_umur</span>;    <span class="comment">// Private field</span>
+        <!-- KELAS PERSON - Enkapsulasi -->
+        <div class="card"> 
+            <h2>👤 7. KELAS PERSON - Enkapsulasi Dasar</h2> 
+            <p><b>Enkapsulasi</b> menyembunyikan data internal dan menyediakan akses melalui getter/setter dengan validasi.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="type">Person</span>(<span class="keyword">this</span>._nama, <span class="keyword">this</span>._umur);
+class Person {
+  String _nama; // Private field
+  int _umur;    // Private field
 
-  <span class="comment">// Getter</span>
-  <span class="type">String</span> <span class="keyword">get</span> nama => _nama;
-  <span class="type">int</span> <span class="keyword">get</span> umur => _umur;
+  Person(this._nama, this._umur);
 
-  <span class="comment">// Setter dengan validasi</span>
-  <span class="keyword">set</span> nama(<span class="type">String</span> namaBaru) {
-    <span class="keyword">if</span> (namaBaru.isNotEmpty) _nama = namaBaru;
+  // Getter
+  String get nama => _nama;
+  int get umur => _umur;
+
+  // Setter dengan validasi
+  set nama(String namaBaru) {
+    if (namaBaru.isNotEmpty) _nama = namaBaru;
   }
 
-  <span class="keyword">set</span> umur(<span class="type">int</span> umurBaru) {
-    <span class="keyword">if</span> (umurBaru > 0 && umurBaru < 150) _umur = umurBaru;
+  set umur(int umurBaru) {
+    if (umurBaru > 0 && umurBaru < 150) _umur = umurBaru;
   }
-}</pre>
-                    </div>
-                </div>
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=a91ea440b0cf5e1c48db3318679f4708&theme=dark&run=true', 'Demo Kelas Person')">👤 JALANKAN PERSON (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 7. PRODUK -->
-            <div id="produk" class="materi">
-                <h2>📦 7. Kelas Produk - Validasi pada Setter</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p>Kelas Produk ini menunjukkan penerapan <strong>validasi data</strong> melalui setter. Validasi adalah proses memeriksa apakah data yang akan dimasukkan memenuhi aturan atau kriteria tertentu sebelum data tersebut benar-benar disimpan.</p>
-                    
-                    <p><strong>Mengapa Validasi Penting?</strong> Dalam aplikasi nyata, data yang tidak valid dapat menyebabkan:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li>Kerusakan logika bisnis (misal: harga negatif)</li>
-                        <li>Error saat pemrosesan data</li>
-                        <li>Inkonsistensi database</li>
-                        <li>Masalah keamanan (injection, overflow, dll)</li>
-                    </ul>
-                    
-                    <p><strong>Aturan Validasi dalam Kelas Produk:</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Nama produk:</strong> Minimal 3 karakter. Ini mencegah nama produk yang terlalu pendek seperti "PC" atau "TV" yang bisa membingungkan.</li>
-                        <li><strong>Harga produk:</strong> Harus lebih besar dari 0. Tidak masuk akal jika ada produk dengan harga nol atau negatif (kecuali dalam skenario tertentu seperti diskon, tapi itu perlu penanganan khusus).</li>
-                    </ul>
-                    
-                    <p><strong>Tempat Validasi:</strong> Validasi sebaiknya dilakukan di setter karena:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li>Setter adalah satu-satunya jalan untuk mengubah data (jika field private)</li>
-                        <li>Validasi terpusat, tidak perlu diulang di banyak tempat</li>
-                        <li>Kelas menjaga integritas datanya sendiri</li>
-                    </ul>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Saat mengisi formulir online, ada validasi seperti "nama minimal 3 karakter" atau "harga harus angka positif". Ini melindungi sistem dari data yang tidak masuk akal dan memberikan pengalaman pengguna yang lebih baik.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Setter tidak harus selalu menerima perubahan. Jika data tidak valid, setter bisa menolak perubahan (dengan tidak mengubah data) dan memberikan pesan error atau melempar exception.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Validasi di setter seperti "satpam" di pintu masuk gedung. Satpam akan memeriksa identitas setiap orang yang mau masuk. Jika identitas tidak sesuai (KTP palsu), satpam akan menolak masuk. Hanya orang dengan identitas valid yang diizinkan.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 produk.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">Produk</span> {
-  <span class="type">String</span> <span class="keyword">_nama</span>;
-  <span class="type">double</span> <span class="keyword">_harga</span>;
+        <!-- KELAS PRODUK - Validasi Setter -->
+        <div class="card"> 
+            <h2>📦 8. KELAS PRODUK - Validasi Setter</h2> 
+            <p><b>Validasi pada setter</b> memastikan data yang masuk sesuai aturan (nama minimal 3 karakter, harga > 0).</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="type">Produk</span>(<span class="keyword">this</span>._nama, <span class="keyword">this</span>._harga);
+class Produk {
+  String _nama;
+  double _harga;
 
-  <span class="keyword">set</span> nama(<span class="type">String</span> value) {
-    <span class="keyword">if</span> (value.length >= 3) _nama = value;
+  Produk(this._nama, this._harga);
+
+  set nama(String value) {
+    if (value.length >= 3) _nama = value;
   }
 
-  <span class="keyword">set</span> harga(<span class="type">double</span> value) {
-    <span class="keyword">if</span> (value > 0) _harga = value;
+  set harga(double value) {
+    if (value > 0) _harga = value;
   }
-}</pre>
-                    </div>
-                </div>
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=ae4bd7f7264ff7273e44d217ae36cdb9&theme=dark&run=true', 'Demo Kelas Produk')">📦 JALANKAN PRODUK (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 8. USER -->
-            <div id="user" class="materi">
-                <h2>🔐 8. Kelas User - Sistem Login</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p>Kelas User mengimplementasikan <strong>sistem autentikasi</strong> sederhana dengan enkapsulasi data sensitif (password). Ini adalah contoh penerapan enkapsulasi dalam konteks keamanan aplikasi.</p>
-                    
-                    <p><strong>Mengapa Password Harus Dienkapsulasi?</strong> Password adalah data yang sangat sensitif. Dalam aplikasi nyata:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li>Password tidak boleh bisa dibaca langsung oleh kode lain (tidak ada getter untuk password)</li>
-                        <li>Perubahan password harus melalui prosedur yang aman (verifikasi password lama)</li>
-                        <li>Password harus memenuhi kriteria keamanan tertentu (minimal panjang, kombinasi karakter, dll)</li>
-                    </ul>
-                    
-                    <p><strong>Fitur Keamanan dalam Kelas User:</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Field private:</strong> _username, _password, _email tidak bisa diakses langsung dari luar</li>
-                        <li><strong>Getter terbatas:</strong> Hanya username dan email yang bisa dibaca. Password tidak memiliki getter.</li>
-                        <li><strong>Method login:</strong> Memverifikasi kredensial tanpa mengekspos password</li>
-                        <li><strong>Method gantiPassword:</strong> Memerlukan password lama untuk verifikasi, dan memvalidasi password baru (minimal 6 karakter)</li>
-                    </ul>
-                    
-                    <p><strong>Prinsip Keamanan yang Diterapkan:</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Need to know:</strong> Hanya informasi yang diperlukan yang diekspos</li>
-                        <li><strong>Defense in depth:</strong> Validasi berlapis (password lama + syarat password baru)</li>
-                        <li><strong>Least privilege:</strong> Method hanya melakukan satu tugas spesifik</li>
-                    </ul>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Saat Anda mengganti password di media sosial, Anda diminta memasukkan password lama dulu, lalu password baru minimal 8 karakter dengan kombinasi huruf dan angka. Ini persis seperti yang kita implementasikan di kelas User.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Dalam aplikasi produksi, password tidak boleh disimpan dalam bentuk plain text seperti contoh ini. Harus di-hash menggunakan algoritma seperti bcrypt, argon2, atau SHA dengan salt.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Kelas User seperti "brankas bank". Anda bisa melihat nomor rekening (username) dan saldo (email), tapi tidak bisa melihat kode brankas (password). Untuk mengganti kode, Anda harus melalui prosedur verifikasi yang ketat.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 user.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">User</span> {
-  <span class="type">String</span> <span class="keyword">_username</span>;
-  <span class="type">String</span> <span class="keyword">_password</span>;
-  <span class="type">String</span> <span class="keyword">_email</span>;
+        <!-- KELAS USER - Sistem Login -->
+        <div class="card"> 
+            <h2>🔐 9. KELAS USER - Sistem Login</h2> 
+            <p><b>Enkapsulasi</b> dengan metode login dan ganti password yang memiliki validasi.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="type">User</span>(<span class="keyword">this</span>._username, <span class="keyword">this</span>._password, <span class="keyword">this</span>._email);
+class User {
+  String _username;
+  String _password;
+  String _email;
 
-  <span class="type">bool</span> login(<span class="type">String</span> username, <span class="type">String</span> password) {
-    <span class="keyword">return</span> username == _username && password == _password;
+  User(this._username, this._password, this._email);
+
+  bool login(String username, String password) {
+    return username == _username && password == _password;
   }
 
-  <span class="keyword">void</span> gantiPassword(<span class="type">String</span> lama, <span class="type">String</span> baru) {
-    <span class="keyword">if</span> (lama == _password && baru.length >= 6) {
+  void gantiPassword(String lama, String baru) {
+    if (lama == _password && baru.length >= 6) {
       _password = baru;
     }
   }
-}</pre>
-                    </div>
-                </div>
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=d02e401f64b5473f1f32537967aadc3f&theme=dark&run=true', 'Demo Kelas User')">🔐 JALANKAN USER (Langsung Output)</button>
             </div>
+        </div> 
 
-            <!-- 9. REKENING BANK -->
-            <div id="rekening" class="materi">
-                <h2>🏦 9. Kelas RekeningBank - Simulasi Transaksi</h2>
-                <div class="deskripsi">
-                    <p><strong>🔍 PENJELASAN LENGKAP:</strong></p>
-                    <p>Kelas RekeningBank adalah simulasi sistem perbankan sederhana yang menerapkan enkapsulasi pada data keuangan yang sensitif (saldo). Ini menunjukkan bagaimana enkapsulasi melindungi integritas data dalam skenario transaksi keuangan.</p>
-                    
-                    <p><strong>Mengapa Saldo Harus Dienkapsulasi?</strong> Saldo rekening adalah data kritis yang tidak boleh sembarangan diubah. Dalam aplikasi perbankan nyata:</p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li>Tidak boleh ada kode yang bisa langsung menulis <code>rekening.saldo = 1000000</code> tanpa melalui prosedur yang benar</li>
-                        <li>Setiap perubahan saldo harus tercatat (audit trail)</li>
-                        <li>Harus ada validasi untuk mencegah transaksi ilegal (saldo negatif, melebihi limit, dll)</li>
-                    </ul>
-                    
-                    <p><strong>Fitur Transaksi yang Diimplementasikan:</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>deposit():</strong> Menambah saldo. Hanya bisa dilakukan dengan jumlah positif.</li>
-                        <li><strong>tarik():</strong> Mengurangi saldo. Memerlukan saldo cukup dan jumlah positif.</li>
-                        <li><strong>transfer():</strong> Memindahkan dana ke rekening lain. Melibatkan validasi saldo pengirim dan memodifikasi dua rekening sekaligus.</li>
-                    </ul>
-                    
-                    <p><strong>Validasi dalam Transaksi:</strong></p>
-                    <ul style="margin-left: 20px; color: #cbd5e1;">
-                        <li><strong>Jumlah positif:</strong> Tidak ada transaksi dengan jumlah nol atau negatif</li>
-                        <li><strong>Saldo cukup:</strong> Untuk tarik dan transfer, saldo harus >= jumlah yang diminta</li>
-                        <li><strong>Integritas transaksi:</strong> Dalam transfer, kedua rekening harus konsisten (pengirim berkurang, penerima bertambah)</li>
-                    </ul>
-                    
-                    <p><strong>Contoh Dunia Nyata:</strong> Saat Anda transfer uang melalui mobile banking, Anda tidak bisa langsung mengubah saldo. Anda harus melalui menu transfer, memasukkan nomor rekening tujuan, jumlah, dan PIN. Semua ini adalah bentuk enkapsulasi yang melindungi data keuangan Anda.</p>
-                </div>
-                <div class="highlight">
-                    📌 <strong>POIN PENTING:</strong> Dalam aplikasi perbankan nyata, method transfer harus bersifat <strong>atomik</strong> - jika salah satu operasi gagal (misal: rekening tujuan error), maka seluruh transaksi harus dibatalkan (rollback). Ini biasanya diimplementasikan dengan database transaction.
-                </div>
-                <div class="note">
-                    <p><strong>💡 ANALOGI SEDERHANA:</strong> Kelas RekeningBank seperti "ATM". Anda bisa menyetor (deposit), mengambil (tarik), dan transfer uang. Tapi Anda tidak bisa membuka mesin ATM dan mengambil uang seenaknya. Semua transaksi harus melalui prosedur yang sudah ditentukan.</p>
-                </div>
-                <div class="code-container">
-                    <div class="code-header">
-                        <span>📁 rekening_bank.dart</span>
-                        <span class="code-badge">DART</span>
-                    </div>
-                    <div class="code-content">
-                        <pre><span class="keyword">class</span> <span class="type">RekeningBank</span> {
-  <span class="type">String</span> <span class="keyword">_nomorRekening</span>;
-  <span class="type">double</span> <span class="keyword">_saldo</span>;
+        <!-- KELAS REKENING BANK - Simulasi Transaksi -->
+        <div class="card"> 
+            <h2>🏦 10. KELAS REKENING BANK - Simulasi Transaksi</h2> 
+            <p><b>Enkapsulasi</b> dengan metode deposit, tarik tunai, dan transfer dengan validasi saldo.</p> 
+            <pre><code>// Nama   : USMAN YAKIN TRIO SINADA
+// Nim    : 251410006
+// Kelas  : SI2A
 
-  <span class="type">RekeningBank</span>(<span class="keyword">this</span>._nomorRekening, <span class="keyword">this</span>._saldo);
+class RekeningBank {
+  String _nomorRekening;
+  double _saldo;
 
-  <span class="keyword">void</span> deposit(<span class="type">double</span> jumlah) {
-    <span class="keyword">if</span> (jumlah > 0) _saldo += jumlah;
+  RekeningBank(this._nomorRekening, this._saldo);
+
+  void deposit(double jumlah) {
+    if (jumlah > 0) _saldo += jumlah;
   }
 
-  <span class="keyword">void</span> tarik(<span class="type">double</span> jumlah) {
-    <span class="keyword">if</span> (jumlah > 0 && _saldo >= jumlah) _saldo -= jumlah;
+  void tarik(double jumlah) {
+    if (jumlah > 0 && _saldo >= jumlah) _saldo -= jumlah;
   }
 
-  <span class="keyword">void</span> transfer(<span class="type">RekeningBank</span> tujuan, <span class="type">double</span> jumlah) {
-    <span class="keyword">if</span> (jumlah > 0 && _saldo >= jumlah) {
+  void transfer(RekeningBank tujuan, double jumlah) {
+    if (jumlah > 0 && _saldo >= jumlah) {
       _saldo -= jumlah;
       tujuan._saldo += jumlah;
     }
   }
-}</pre>
-                    </div>
-                </div>
+}</code></pre>
+            <div class="btn-group">
+                <button onclick="openModal('https://dartpad.dev/embed-dart.html?id=a7e6c9368035d0f6d75d98b794824fc5&theme=dark&run=true', 'Demo Kelas RekeningBank')">🏦 JALANKAN REKENING (Langsung Output)</button>
             </div>
+        </div> 
 
-            <div style="margin-top: 40px; padding: 20px; background: #1e293b; border-radius: 10px;">
-                <h3 style="color: #7dd3fc; margin-bottom: 15px;">📌 KESIMPULAN</h3>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 10px;">✅ <strong>Constructor</strong> adalah fondasi pembuatan objek - memastikan objek lahir dengan data yang valid</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Named constructor</strong> memberikan fleksibilitas dalam berbagai skenario inisialisasi</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Constant constructor</strong> menghemat memori dengan canonicalization untuk objek immutable</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Initializer list</strong> memungkinkan validasi/manipulasi data sebelum objek jadi</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Enkapsulasi</strong> dengan getter & setter menjaga keamanan dan integritas data</li>
-                    <li style="margin-bottom: 10px;">✅ <strong>Validasi pada setter</strong> mencegah data tidak valid masuk ke dalam objek</li>
-                    <li style="margin-bottom: 10px;">✅ Semua konsep ini membuat kode lebih <strong>terstruktur, aman, dan mudah dipelihara</strong></li>
-                </ul>
-            </div>
-        </div>
+        <!-- KESIMPULAN -->
+        <div class="card"> 
+            <h2>🎯 11. KESIMPULAN</h2> 
+            <p>✅ <b>Constructor</b> memungkinkan pembuatan objek dengan nilai awal spesifik (parameterized, named, constant).</p>
+            <p>✅ <b>Enkapsulasi</b> dengan getter & setter menjaga keamanan data, mencegah akses langsung ke atribut private.</p>
+            <p>✅ <b>Validasi</b> pada setter memastikan data selalu dalam keadaan valid dan konsisten.</p>
+            <p style="color: #00ff9f; margin-top: 20px;">🔴 Semua source code di website ini SESUAI dengan kode yang ada di GIST.</p>
+        </div> 
+    </div> 
 
-        <div class="footer">
-            <p>© 2024 - <strong>USMAN YAKIN TRIO SINADA</strong> | NIM: 251410006 | Kelas: SI2A</p>
-            <p style="margin-top: 5px; font-size: 0.9em;">✨ Tema Malam dengan Bintang - Implementasi Constructor dan Enkapsulasi ✨</p>
-        </div>
-    </div>
-</body>
+    <footer> 
+        © 2026 - USMAN YAKIN TRIO SINADA | UNIVERSITAS BINADARMA 
+    </footer> 
+
+    <script>
+        // Fungsi untuk membuka modal popup dengan auto-run
+        function openModal(url, title) {
+            const modal = document.getElementById('modalOverlay');
+            const iframe = document.getElementById('modalIframe');
+            const titleElement = document.getElementById('modalTitle');
+            
+            // Set source iframe dan judul
+            iframe.src = url;
+            titleElement.textContent = title;
+            
+            // Tampilkan modal
+            modal.style.display = 'flex';
+            
+            // Prevent scrolling di background
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            const modal = document.getElementById('modalOverlay');
+            const iframe = document.getElementById('modalIframe');
+            
+            // Sembunyikan modal
+            modal.style.display = 'none';
+            
+            // Kosongkan src iframe untuk stop loading
+            iframe.src = 'about:blank';
+            
+            // Kembalikan scrolling
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Tutup modal jika klik di luar area modal
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Tutup modal dengan tombol ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body> 
 </html>
